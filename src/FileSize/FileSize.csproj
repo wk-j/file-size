@@ -3,9 +3,9 @@
     <ToolCommandName>wk-file-size</ToolCommandName>
     <PackAsTool>true</PackAsTool>
     <OutputType>Exe</OutputType>
-    <Version>1.0.1</Version>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <!-- Workaround only required for early previews of .NET Core tools. Can be removed when .NET Core 2.1 is released. -->
+    <PackageId>wk.FileSize</PackageId>
+    <Version>18.2.1</Version>
+    <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
     <NETCorePlatformsImplicitPackageVersion>2.0.1</NETCorePlatformsImplicitPackageVersion>
   </PropertyGroup>
 </Project>

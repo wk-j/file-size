@@ -1,10 +1,12 @@
 ## Get File Size
 
 ```
-rm ~/.dotnet/tools/wk-file-size
-cake -target=Pack
-dotnet install tool -g FileSize --source ./publish
+dotnet install tool -g wk.FileSize
+```
 
+## Usage 
+
+```
 wk-file-size README.md
 wk-file-size -b README.md
 wk-file-size -k README.md

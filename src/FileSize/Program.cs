@@ -3,11 +3,13 @@ using System.IO;
 
 namespace FileSize {
 
-    enum Unit { Byte, KB, MB, GB }
+    enum Unit { Byte, KB, MB, GB, ZZ }
     class Program {
 
-        private static (Unit, string) ParseCommands(string[] args) {
+        static ConsoleColor fg = Console.ForegroundColor;
+        static ConsoleColor bg = Console.BackgroundColor;
 
+        private static (Unit, string) ParseCommands(string[] args) {
             if (args.Length == 1) {
                 return (Unit.KB, args[0]);
             } else if (args.Length == 2) {
@@ -18,41 +20,55 @@ namespace FileSize {
                 else if (u == "-g") return (Unit.GB, file);
                 else return (Unit.KB, file);
             } else {
-                throw new Exception("Error - Invalid argument");
+                return (Unit.ZZ, "Invalid argument");
             }
         }
 
-        public static int Main(string[] args) {
+        static void DisplaySize(Unit unit, double size) {
 
             double toKb(double i) => i / 1024.0;
             double toMb(double i) => toKb(i) / 1024.0;
             double toGb(double i) => toMb(i) / 1024.0;
 
-            var fg = Console.ForegroundColor;
-            var bg = Console.BackgroundColor;
-
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.ForegroundColor = ConsoleColor.White;
-
-            var (unit, file) = ParseCommands(args);
-            if (!File.Exists(file)) {
-                throw new Exception($"Error - File \"{file}\" not exist");
+            void setColor(ConsoleColor f, ConsoleColor b) {
+                Console.ForegroundColor = f;
+                Console.BackgroundColor = b;
             }
 
-            var size = new FileInfo(file).Length;
+            void print(double value) {
+                Console.WriteLine(String.Format("{0:0.###} {1}", value, unit));
+            }
+
+            setColor(ConsoleColor.White, ConsoleColor.DarkBlue);
 
             if (unit == Unit.Byte) {
-                Console.WriteLine(String.Format("{0} {1}", size, unit));
+                print(size);
             } else if (unit == Unit.KB) {
-                Console.WriteLine(String.Format("{0:0.###} {1}", toKb(size), unit));
+                print(toKb(size));
             } else if (unit == Unit.MB) {
-                Console.WriteLine(String.Format("{0:0.###} {1}", toMb(size), unit));
+                print(toMb(size));
             } else if (unit == Unit.GB) {
-                Console.WriteLine(String.Format("{0:0.###} {1}", toGb(size), unit));
+                print(toGb(size));
             }
 
-            Console.BackgroundColor = bg;
-            Console.ForegroundColor = fg;
+            setColor(fg, bg);
+        }
+
+        public static int Main(string[] args) {
+
+            var (unit, file) = ParseCommands(args);
+
+            if (unit == Unit.ZZ) {
+                Console.WriteLine("Error - {0}", file);
+                return -1;
+            }
+
+            if (!File.Exists(file)) {
+                Console.WriteLine("Error - File \"{0}\" is not exist", file);
+                return -1;
+            }
+
+            DisplaySize(unit, new FileInfo(file).Length);
 
             return 0;
         }

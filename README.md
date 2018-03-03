@@ -1,6 +1,5 @@
 ## Get File Size
 
-
 ```
 rm ~/.dotnet/tools/wk-file-size
 cake -target=Pack

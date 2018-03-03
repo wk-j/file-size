@@ -25,9 +25,24 @@ namespace FileSize
             double toMb(double i) => toKb(i) / 1024.0;
             double toGb(double i) => toMb(i) / 1024.0;
 
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.White;
+
             var size = new FileInfo(file).Length + 0.0;
-            var format = string.Format("{0} BYTE, {1:0.###} KB, {2:0.###} MB, {2:0.###} GB", size, toKb(size), toMb(size), toGb(size));
+            var format = string.Format(" {0} BYTE, {1:0.###} KB, {2:0.###} MB, {3:0.###} GB ",
+                size,
+                toKb(size),
+                toMb(size),
+                toGb(size));
+
             Console.WriteLine(format);
+
+            Console.BackgroundColor = bg;
+            Console.ForegroundColor = fg;
+
             return 0;
         }
     }
